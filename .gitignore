@@ -2,11 +2,13 @@
 *.suo
 *.sdf
 *.opensdf
+*.user
 
 # Compiled Object files
 *.slo
 *.lo
 *.o
+debug
 
 # Compiled Dynamic libraries
 *.so
