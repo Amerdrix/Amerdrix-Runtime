@@ -19,13 +19,17 @@ namespace VM{
 		operations[BGT] = &VirtMachine::op_bgt;
 		operations[BGTE] = &VirtMachine::op_bgte;
 
-
 		operations[LOADA] = &VirtMachine::op_loada;
 		operations[LOADB] = &VirtMachine::op_loadb;
 	
 		operations[JUMP] = &VirtMachine::op_jump;
 		operations[CALL] = &VirtMachine::op_call;
 		operations[RETURN] = &VirtMachine::op_return;
+
+		operations[ADDI] = &VirtMachine::op_addi;
+		operations[SUBI] = &VirtMachine::op_subi;
+		operations[MULI] = &VirtMachine::op_muli;
+		operations[DIVI] = &VirtMachine::op_divi;
 	}
 
 	VirtMachine::~VirtMachine(void)
@@ -109,8 +113,6 @@ namespace VM{
 		}
 	}
 
-
-
 	void VirtMachine::op_blte(const ArgumentList &args){
 		if (reg_a <= reg_b)
 		{
@@ -173,5 +175,26 @@ namespace VM{
 		pc = pc_stack.top();
 		pc_stack.pop();
 		printf("RETURN -> (%04x)\n", pc);
+	}
+
+	void VirtMachine::op_addi(const ArgumentList &args){
+		accumuliator = reg_a + reg_b;
+		printf("ADDI\n", pc);
+	}
+	
+	void VirtMachine::op_subi(const ArgumentList &args){
+		accumuliator = reg_a + reg_b;
+		printf("SUBI\n", pc);
+	}
+	
+	void VirtMachine::op_muli(const ArgumentList &args){
+		accumuliator = reg_a + reg_b;
+		printf("MULI\n", pc);
+	}
+
+	
+	void VirtMachine::op_divi(const ArgumentList &args){
+		accumuliator = reg_a / reg_b;
+		printf("DIVI\n", pc);
 	}
 };

@@ -34,5 +34,11 @@ namespace VM
 
 		LOADA = 0x90,
 		LOADB = 0x91,
+
+		// Arithmatic
+		ADDI = 0xA0,
+		SUBI = 0xA1,
+		MULI = 0xA2,
+		DIVI = 0xA3,
 	}; 
 };

@@ -17,6 +17,7 @@ namespace VM
 
 		int reg_a;
 		int reg_b;
+		int accumuliator;
 		unsigned int pc;
 
 		std::stack<unsigned int> pc_stack;
@@ -36,7 +37,6 @@ namespace VM
 		void op_bgt(const ArgumentList &);
 		void op_bgte(const ArgumentList &);
 		
-
 		void op_loada(const ArgumentList &);
 		void op_loadb(const ArgumentList &);
 
@@ -44,5 +44,11 @@ namespace VM
 
 		void op_call(const ArgumentList &);
 		void op_return(const ArgumentList &);
+
+		void op_addi(const ArgumentList &);
+		void op_subi(const ArgumentList &);
+		void op_muli(const ArgumentList &);
+		void op_divi(const ArgumentList &);
+
 	};
 };
