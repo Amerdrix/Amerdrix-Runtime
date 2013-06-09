@@ -7,9 +7,8 @@ namespace VM{
 	VirtMachine::VirtMachine(const InstructionList &list)
 	{
 		this->instructionList = list;
-		pc = 0;
-
-		memset(operations, 0, sizeof(Operation) * 0xFF);
+		
+		memset(operations, 0, sizeof(Operation) * MAX_OPCODE);
 		operations[NOP] = &VirtMachine::op_nop;
 		
 		operations[BE] = &VirtMachine::op_be;
@@ -21,6 +20,11 @@ namespace VM{
 
 		operations[LOADA] = &VirtMachine::op_loada;
 		operations[LOADB] = &VirtMachine::op_loadb;
+		operations[MOV_ACC_A] = &VirtMachine::op_mov_acca;
+		operations[MOV_ACC_B] = &VirtMachine::op_mov_accb;
+		operations[MOV_B_A] = &VirtMachine::op_mov_b_a;
+		operations[MOV_A_B] = &VirtMachine::op_mov_a_b;
+
 	
 		operations[JUMP] = &VirtMachine::op_jump;
 		operations[CALL] = &VirtMachine::op_call;
@@ -30,6 +34,14 @@ namespace VM{
 		operations[SUBI] = &VirtMachine::op_subi;
 		operations[MULI] = &VirtMachine::op_muli;
 		operations[DIVI] = &VirtMachine::op_divi;
+
+		operations[PUTA] = &VirtMachine::op_puta;
+		operations[PUTB] = &VirtMachine::op_putb;
+
+		pc = 0;
+		reg_a = 0;
+		reg_b = 0;
+
 	}
 
 	VirtMachine::~VirtMachine(void)
@@ -125,7 +137,7 @@ namespace VM{
 		}
 	}
 	void VirtMachine::op_bgt(const ArgumentList &args){
-		if (reg_a < reg_b)
+		if (reg_a > reg_b)
 		{
 			pc = args[0];
 			printf("BGT -> (%04x)\n", pc);
@@ -137,7 +149,7 @@ namespace VM{
 	}
 
 	void VirtMachine::op_bgte(const ArgumentList &args){
-		if (reg_a <= reg_b)
+		if (reg_a >= reg_b)
 		{
 			pc = args[0];
 			printf("BGTE -> (%04x)\n", pc);
@@ -147,7 +159,6 @@ namespace VM{
 			++pc;
 		}
 	}
-
 
 	void VirtMachine::op_loada(const ArgumentList &args){
 		reg_a = args[0];
@@ -159,6 +170,17 @@ namespace VM{
 		reg_b = args[0];
 		printf("LOADB (%04x)\n", reg_b);
 	}
+
+	void VirtMachine::op_mov_acca(const ArgumentList &args){
+		reg_a = accumuliator;
+		printf("MOV_ACCA (%04x)\n", accumuliator);
+	}
+
+	void VirtMachine::op_mov_accb(const ArgumentList &args){
+		reg_b = accumuliator;
+		printf("MOV_ACCB (%04x)\n", accumuliator);
+	}
+
 
 	void VirtMachine::op_jump(const ArgumentList &args){
 		pc = args[0];
@@ -197,4 +219,22 @@ namespace VM{
 		accumuliator = reg_a / reg_b;
 		printf("DIVI\n", pc);
 	}
+
+	void VirtMachine::op_mov_a_b(const ArgumentList &args){
+		reg_b = reg_a;
+		printf("MOVE A -> B\n");
+	}
+	void VirtMachine::op_mov_b_a(const ArgumentList &args){
+		reg_a = reg_b;
+		printf("MOVE B -> A\n");
+	}
+
+	void VirtMachine::op_puta(const ArgumentList &args){
+		printf("REG_A = (%04x)\n", reg_a);
+	}
+	
+	void VirtMachine::op_putb(const ArgumentList &args){
+		printf("REG_B = (%04x)\n", reg_b);
+	}
+	
 };

@@ -13,7 +13,7 @@ namespace VM
 		typedef void(VirtMachine::*Operation)(const ArgumentList &args);
 		InstructionList instructionList;
 
-		Operation operations[0xFF];
+		Operation operations[MAX_OPCODE];
 
 		int reg_a;
 		int reg_b;
@@ -40,6 +40,11 @@ namespace VM
 		void op_loada(const ArgumentList &);
 		void op_loadb(const ArgumentList &);
 
+		void op_mov_b_a(const ArgumentList &);
+		void op_mov_a_b(const ArgumentList &);
+		void op_mov_acca(const ArgumentList &);
+		void op_mov_accb(const ArgumentList &);
+
 		void op_jump(const ArgumentList &);
 
 		void op_call(const ArgumentList &);
@@ -49,6 +54,10 @@ namespace VM
 		void op_subi(const ArgumentList &);
 		void op_muli(const ArgumentList &);
 		void op_divi(const ArgumentList &);
+
+		void op_puta(const ArgumentList &);
+		void op_putb(const ArgumentList &);
+
 
 	};
 };
