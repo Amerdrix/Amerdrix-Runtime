@@ -35,9 +35,12 @@ namespace VM{
 		operations[MULI] = &VirtMachine::op_muli;
 		operations[DIVI] = &VirtMachine::op_divi;
 
+		operations[STACK_ALLOC] = &VirtMachine::op_struct_alloc;
+
 		operations[PUTA] = &VirtMachine::op_puta;
 		operations[PUTB] = &VirtMachine::op_putb;
 
+		stack_head = 0;
 		pc = 0;
 		reg_a = 0;
 		reg_b = 0;
@@ -181,21 +184,28 @@ namespace VM{
 		printf("MOV_ACCB (%04x)\n", accumuliator);
 	}
 
-
 	void VirtMachine::op_jump(const ArgumentList &args){
 		pc = args[0];
 		printf("JUMP -> (%04x)\n", pc);
 	}
 
 	void VirtMachine::op_call(const ArgumentList &args){
-		pc_stack.push(pc + 1);
+		CallPointer call;
+		call.pc = pc + 1;
+		call.stack_head = stack_head;
+		call_stack.push(call);
+
 		pc = args[0];
 		printf("CALL -> (%04x)\n", pc);
 	}
 
 	void VirtMachine::op_return(const ArgumentList &args){
-		pc = pc_stack.top();
-		pc_stack.pop();
+		CallPointer call = call_stack.top();
+		call_stack.pop();
+
+		pc = call.pc;
+		stack_head = call.stack_head;
+
 		printf("RETURN -> (%04x)\n", pc);
 	}
 
@@ -214,7 +224,6 @@ namespace VM{
 		printf("MULI\n", pc);
 	}
 
-	
 	void VirtMachine::op_divi(const ArgumentList &args){
 		accumuliator = reg_a / reg_b;
 		printf("DIVI\n", pc);
@@ -229,6 +238,13 @@ namespace VM{
 		printf("MOVE B -> A\n");
 	}
 
+	void VirtMachine::op_struct_alloc(const ArgumentList &args){
+		
+		StackPointer stack_head_old = stack_head;
+		stack_head += args[0];
+
+		printf("STACK_ALLOC @(%04x)\n", stack_head_old);
+	}
 	void VirtMachine::op_puta(const ArgumentList &args){
 		printf("REG_A = (%04x)\n", reg_a);
 	}
@@ -236,5 +252,4 @@ namespace VM{
 	void VirtMachine::op_putb(const ArgumentList &args){
 		printf("REG_B = (%04x)\n", reg_b);
 	}
-	
 };

@@ -1,5 +1,6 @@
 #pragma once
 #include "Instruction.h"
+#include "CallPointer.h"
 #include <vector>
 #include <stack>
 
@@ -10,18 +11,20 @@ namespace VM
 	class VirtMachine
 	{
 	private:
+		static const int STACK_SIZE = 2048;
 		typedef void(VirtMachine::*Operation)(const ArgumentList &args);
 		InstructionList instructionList;
 
 		Operation operations[MAX_OPCODE];
 
-		int reg_a;
-		int reg_b;
-		int accumuliator;
+		unsigned long reg_a;
+		unsigned long reg_b;
+		unsigned long accumuliator;
 		unsigned int pc;
+		unsigned long stack_mem[STACK_SIZE];
 
-		std::stack<unsigned int> pc_stack;
-
+		StackPointer stack_head;
+		std::stack<CallPointer> call_stack;
 
 	public:
 		VirtMachine(const InstructionList &list);
@@ -55,9 +58,10 @@ namespace VM
 		void op_muli(const ArgumentList &);
 		void op_divi(const ArgumentList &);
 
+		void op_struct_alloc(const ArgumentList &);
+		void op_heap_alloc(const ArgumentList &);
+
 		void op_puta(const ArgumentList &);
 		void op_putb(const ArgumentList &);
-
-
 	};
 };

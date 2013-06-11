@@ -80,6 +80,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CallPointer.h" />
     <ClInclude Include="ErrorCodes.h" />
     <ClInclude Include="Instruction.h" />
     <ClInclude Include="Operations.h" />

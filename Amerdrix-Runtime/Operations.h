@@ -34,11 +34,26 @@ namespace VM
 
 		LOADA = 0x90,
 		LOADB = 0x91,
-
+		MOV_A_B = 0x92,
+		MOV_B_A = 0x93,
+		MOV_ACC_A = 0x94,
+		MOV_ACC_B = 0x95,
+		
 		// Arithmatic
 		ADDI = 0xA0,
 		SUBI = 0xA1,
 		MULI = 0xA2,
 		DIVI = 0xA3,
+
+		// Allocation
+		STACK_ALLOC = 0xB0,
+		HEAP_ALLOC = 0xB1,
+		
+		// MISC
+
+		PUTA = 0x180,
+		PUTB = 0x181,
 	}; 
+
+	const unsigned int MAX_OPCODE = PUTB + 1;
 };

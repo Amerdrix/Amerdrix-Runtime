@@ -36,6 +36,9 @@
     <ClInclude Include="ErrorCodes.h">
       <Filter>Header Files\VM</Filter>
     </ClInclude>
+    <ClInclude Include="CallPointer.h">
+      <Filter>Header Files\VM</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TypeDefinition.cpp">
