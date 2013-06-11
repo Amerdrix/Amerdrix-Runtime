@@ -41,10 +41,9 @@ namespace VM{
 		operations[PUTB] = &VirtMachine::op_putb;
 
 		stack_head = 0;
-		pc = 0;
+		instruction_pointer = 0;
 		reg_a = 0;
 		reg_b = 0;
-
 	}
 
 	VirtMachine::~VirtMachine(void)
@@ -56,13 +55,13 @@ namespace VM{
 
 		while (true)
 		{
-			if (pc >= instructionList.size())
+			if (instruction_pointer >= instructionList.size())
 			{
 				return MALFORMED_BYTE_CODE;
 			}
 
-			Instruction inst = instructionList.at(pc);
-			printf("%04x:%02x\t", pc, inst.operation);
+			Instruction inst = instructionList.at(instruction_pointer);
+			printf("%04x:%02x\t", instruction_pointer, inst.operation);
 
 			Operation operationMethod = operations[inst.operation];
 
@@ -82,7 +81,7 @@ namespace VM{
 
 			if (inst.operation & SequenceOpFlag)
 			{
-				++pc;
+				++instruction_pointer;
 			}
 		}
 
@@ -96,70 +95,70 @@ namespace VM{
 	void VirtMachine::op_be(const ArgumentList &args){
 		if (reg_a == reg_b)
 		{
-			pc = args[0];
-			printf("BN -> (%04x)\n", pc);
+			instruction_pointer = args[0];
+			printf("BN -> (%04x)\n", instruction_pointer);
 		}else
 		{
-			printf("BN (no jump)\n", pc);
-			++pc;
+			printf("BN (no jump)\n", instruction_pointer);
+			++instruction_pointer;
 		}
 	}
 	void VirtMachine::op_bne(const ArgumentList &args){
 		if (reg_a != reg_b)
 		{
-			pc = args[0];
-			printf("BNE -> (%04x)\n", pc);
+			instruction_pointer = args[0];
+			printf("BNE -> (%04x)\n", instruction_pointer);
 		}else
 		{
-			printf("BNE (no jump)\n", pc);
-			++pc;
+			printf("BNE (no jump)\n", instruction_pointer);
+			++instruction_pointer;
 		}
 	}
 	
 	void VirtMachine::op_blt(const ArgumentList &args){
 		if (reg_a < reg_b)
 		{
-			pc = args[0];
-			printf("BLT -> (%04x)\n", pc);
+			instruction_pointer = args[0];
+			printf("BLT -> (%04x)\n", instruction_pointer);
 		}else
 		{
-			printf("BLT (no jump)\n", pc);
-			++pc;
+			printf("BLT (no jump)\n", instruction_pointer);
+			++instruction_pointer;
 		}
 	}
 
 	void VirtMachine::op_blte(const ArgumentList &args){
 		if (reg_a <= reg_b)
 		{
-			pc = args[0];
-			printf("BLTE -> (%04x)\n", pc);
+			instruction_pointer = args[0];
+			printf("BLTE -> (%04x)\n", instruction_pointer);
 		}else
 		{
-			printf("BLTE (no jump)\n", pc);
-			++pc;
+			printf("BLTE (no jump)\n", instruction_pointer);
+			++instruction_pointer;
 		}
 	}
 	void VirtMachine::op_bgt(const ArgumentList &args){
 		if (reg_a > reg_b)
 		{
-			pc = args[0];
-			printf("BGT -> (%04x)\n", pc);
+			instruction_pointer = args[0];
+			printf("BGT -> (%04x)\n", instruction_pointer);
 		}else
 		{
-			printf("BGT (no jump)\n", pc);
-			++pc;
+			printf("BGT (no jump)\n", instruction_pointer);
+			++instruction_pointer;
 		}
 	}
 
 	void VirtMachine::op_bgte(const ArgumentList &args){
 		if (reg_a >= reg_b)
 		{
-			pc = args[0];
-			printf("BGTE -> (%04x)\n", pc);
+			instruction_pointer = args[0];
+			printf("BGTE -> (%04x)\n", instruction_pointer);
 		}else
 		{
-			printf("BGTE (no jump)\n", pc);
-			++pc;
+			printf("BGTE (no jump)\n", instruction_pointer);
+			++instruction_pointer;
 		}
 	}
 
@@ -185,48 +184,48 @@ namespace VM{
 	}
 
 	void VirtMachine::op_jump(const ArgumentList &args){
-		pc = args[0];
-		printf("JUMP -> (%04x)\n", pc);
+		instruction_pointer = args[0];
+		printf("JUMP -> (%04x)\n", instruction_pointer);
 	}
 
 	void VirtMachine::op_call(const ArgumentList &args){
 		CallPointer call;
-		call.pc = pc + 1;
+		call.instruction_pointer = instruction_pointer + 1;
 		call.stack_head = stack_head;
 		call_stack.push(call);
 
-		pc = args[0];
-		printf("CALL -> (%04x)\n", pc);
+		instruction_pointer = args[0];
+		printf("CALL -> (%04x)\n", instruction_pointer);
 	}
 
 	void VirtMachine::op_return(const ArgumentList &args){
 		CallPointer call = call_stack.top();
 		call_stack.pop();
 
-		pc = call.pc;
+		instruction_pointer = call.instruction_pointer;
 		stack_head = call.stack_head;
 
-		printf("RETURN -> (%04x)\n", pc);
+		printf("RETURN -> (%04x)\n", instruction_pointer);
 	}
 
 	void VirtMachine::op_addi(const ArgumentList &args){
 		accumuliator = reg_a + reg_b;
-		printf("ADDI\n", pc);
+		printf("ADDI\n", instruction_pointer);
 	}
 	
 	void VirtMachine::op_subi(const ArgumentList &args){
 		accumuliator = reg_a + reg_b;
-		printf("SUBI\n", pc);
+		printf("SUBI\n", instruction_pointer);
 	}
 	
 	void VirtMachine::op_muli(const ArgumentList &args){
 		accumuliator = reg_a + reg_b;
-		printf("MULI\n", pc);
+		printf("MULI\n", instruction_pointer);
 	}
 
 	void VirtMachine::op_divi(const ArgumentList &args){
 		accumuliator = reg_a / reg_b;
-		printf("DIVI\n", pc);
+		printf("DIVI\n", instruction_pointer);
 	}
 
 	void VirtMachine::op_mov_a_b(const ArgumentList &args){

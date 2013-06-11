@@ -1,11 +1,11 @@
 #pragma once
 namespace VM
 {
-	typedef unsigned int PcPointer;
+	typedef unsigned int InstructionPointer;
 	typedef unsigned int StackPointer;
 	struct CallPointer
 	{
-		PcPointer pc;
+		InstructionPointer instruction_pointer;
 		StackPointer stack_head;
 	};
 }

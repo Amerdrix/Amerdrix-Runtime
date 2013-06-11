@@ -20,7 +20,7 @@ namespace VM
 		unsigned long reg_a;
 		unsigned long reg_b;
 		unsigned long accumuliator;
-		unsigned int pc;
+		unsigned int instruction_pointer;
 		unsigned long stack_mem[STACK_SIZE];
 
 		StackPointer stack_head;
